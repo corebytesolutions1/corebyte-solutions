@@ -1,0 +1,27 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <%- include('../partials/page-hero', { heading: 'Industries we build for', lead: 'We are strongest where operations, documents and data meet: container freight, customs-related work, transport, weighbridges and growing businesses that have outgrown spreadsheets.' }) %>
+
+  <section class="section section--tight">
+    <div class="container">
+      <ul class="industries" role="list">
+        <% industries.forEach((ind, i) => { %>
+          <li class="industry" data-reveal data-spotlight style="--d:<%= i %>">
+            <span class="industry__icon"><%- icon(ind.icon) %></span>
+            <h2 class="industry__title"><%= ind.title %></h2>
+            <p><%= ind.text %></p>
+            <ul class="industry__links" role="list">
+              <% ind.links.forEach(slug => { const s = bySlug[slug]; if (!s) return; %>
+                <li><a class="text-link" href="/services/<%= s.slug %>"><%= s.title %> <%- icon('arrow-right') %></a></li>
+              <% }) %>
+            </ul>
+          </li>
+        <% }) %>
+      </ul>
+      <p class="note mt-l" data-reveal>Your industry isn’t listed? Most of our work starts with a workflow, not an industry. <a class="text-link" href="/contact">Tell us about yours</a>.</p>
+    </div>
+  </section>
+
+  <%- include('../partials/cta') %>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,8 @@
+<div class="faq" data-faq>
+  <% faq.forEach((f, i) => { %>
+    <details class="faq__item" data-reveal style="--d:<%= i %>">
+      <summary><span><%= f.q %></span><span class="faq__icon" aria-hidden="true"></span></summary>
+      <div class="faq__body"><p><%= f.a %></p></div>
+    </details>
+  <% }) %>
+</div>

@@ -1,0 +1,72 @@
+<%
+  const fSol = allServices.filter(s => s.group === 'solutions');
+  const fCore = allServices.filter(s => s.group !== 'solutions');
+%>
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="brand" href="/" aria-label="CoreByte Solutions — home">
+        <%- include('logo-mark', { size: 30, cls: '' }) %>
+        <span class="brand__word">CoreByte<span class="brand__sub">Solutions</span></span>
+      </a>
+      <p class="footer__tag"><%= site.tagline %></p>
+      <p class="footer__note">Software, web and AI development from <%= site.location.city %>, <%= site.location.region %>, for businesses across India and beyond.</p>
+      <ul class="footer__contact" role="list">
+        <li><%- icon('globe') %><a href="<%= site.url %>"><%= site.domain %></a></li>
+        <li><%- icon('mail') %><% if (site.contact.email) { %><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a><% } else { %><%- placeholder('', 'Business email') %><% } %></li>
+        <li><%- icon('map-pin') %><%- placeholder(site.contact.address, 'Office address') %></li>
+      </ul>
+    </div>
+
+    <nav class="footer__col" aria-label="Footer: solutions">
+      <p class="footer__head">Solutions</p>
+      <ul role="list">
+        <% fSol.forEach(s => { %><li><a href="/services/<%= s.slug %>"><%= s.title %></a></li><% }) %>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Footer: services">
+      <p class="footer__head">Services &amp; technology</p>
+      <ul role="list">
+        <% fCore.forEach(s => { %><li><a href="/services/<%= s.slug %>"><%= s.title %></a></li><% }) %>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Footer: company">
+      <p class="footer__head">Company</p>
+      <ul role="list">
+        <li><a href="/about">About</a></li>
+        <li><a href="/industries">Industries</a></li>
+        <li><a href="/projects">Client projects</a></li>
+        <li><a href="/trade">CHA &amp; Import / Export <span class="tag-soon">Coming soon</span></a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer__legal">
+    <p>&copy; <%= year %> <%= site.name %>. All rights reserved.</p>
+    <p class="footer__disclaimer">ICEGATE/SCMTR tools are independent software developed around applicable technical documentation. CoreByte Solutions is not a government portal or agency.</p>
+  </div>
+</footer>
+
+<!-- Floating mode switch -->
+<div class="mode-switch" role="group" aria-label="Site mode">
+  <button type="button" class="mode-switch__btn" data-mode-btn="tech" aria-pressed="true">Tech</button>
+  <button type="button" class="mode-switch__btn" data-mode-btn="trade" aria-pressed="false">Trade</button>
+  <span class="mode-switch__thumb" aria-hidden="true"></span>
+</div>
+
+<%- include('mode-overlay') %>
+
+<div class="toast" role="status" aria-live="polite" data-toast></div>
+
+<script src="/js/main.js?v=<%= v %>" defer></script>
+<script src="/js/mode-switcher.js?v=<%= v %>" defer></script>
+<script src="/js/animations.js?v=<%= v %>" defer></script>
+<script src="/js/cursor.js?v=<%= v %>" defer></script>
+<% if (typeof scripts !== 'undefined') { scripts.forEach(src => { %><script src="<%= src %>?v=<%= v %>" defer></script>
+<% }) } %>
+</body>
+</html>

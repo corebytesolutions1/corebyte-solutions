@@ -1,0 +1,102 @@
+<%
+  const nodes = [
+    { y: 46,  icon: 'braces',    label: 'JSON / API' },
+    { y: 118, icon: 'database',  label: 'Database' },
+    { y: 190, icon: 'monitor',   label: 'Desktop app' },
+    { y: 262, icon: 'sparkles',  label: 'AI' },
+    { y: 334, icon: 'container', label: 'CFS / Port' }
+  ];
+  const sprite = '/icons/sprite.svg?v=' + v + '#';
+%>
+<div class="route" data-route>
+  <svg class="route__svg" viewBox="0 0 440 380" role="img" aria-labelledby="route-title route-desc">
+    <title id="route-title">How CoreByte connects a business to its software</title>
+    <desc id="route-desc">Client requirements flow into CoreByte, which builds APIs, databases, desktop applications, AI and CFS tools that deliver results to the business.</desc>
+    <defs>
+      <linearGradient id="route-line" x1="0" x2="1">
+        <stop offset="0" class="s-acc" stop-opacity=".15"/>
+        <stop offset=".5" class="s-acc" stop-opacity=".75"/>
+        <stop offset="1" class="s-acc2" stop-opacity=".45"/>
+      </linearGradient>
+      <radialGradient id="core-glow">
+        <stop offset="0" class="s-acc" stop-opacity=".5"/>
+        <stop offset="1" class="s-acc" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- paths -->
+    <path id="p-in" class="route__path" d="M62 190 H118"/>
+    <% nodes.forEach((n, i) => { %>
+      <path id="p-out-<%= i %>" class="route__path" d="M182 190 C 220 190, 216 <%= n.y %>, 248 <%= n.y %>"/>
+      <path id="p-biz-<%= i %>" class="route__path" d="M356 <%= n.y %> C 374 <%= n.y %>, 368 190, 386 190"/>
+    <% }) %>
+
+    <!-- packets -->
+    <g class="route__packets">
+      <circle r="3.2" class="pk pk--in"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#p-in"/></animateMotion></circle>
+      <% nodes.forEach((n, i) => { %>
+        <circle r="2.6" class="pk"><animateMotion dur="2.4s" begin="<%= (i * 0.45).toFixed(2) %>s" repeatCount="indefinite"><mpath href="#p-out-<%= i %>"/></animateMotion></circle>
+        <circle r="2.6" class="pk pk--biz"><animateMotion dur="2.4s" begin="<%= (1.2 + i * 0.45).toFixed(2) %>s" repeatCount="indefinite"><mpath href="#p-biz-<%= i %>"/></animateMotion></circle>
+      <% }) %>
+    </g>
+
+    <!-- client -->
+    <g class="route__node route__node--end">
+      <circle cx="40" cy="190" r="22"/>
+      <use href="<%= sprite %>user" x="30" y="180" width="20" height="20"/>
+      <text x="40" y="232" text-anchor="middle">Client</text>
+    </g>
+
+    <!-- core -->
+    <g class="route__core">
+      <circle cx="150" cy="190" r="64" fill="url(#core-glow)" class="route__glow"/>
+      <rect x="118" y="158" width="64" height="64" rx="12" class="route__core-box"/>
+      <g transform="translate(134 174)" class="route__core-mark">
+        <rect x="2" y="10" width="6" height="6" rx="1.2" class="cm-b"/><rect x="10" y="2" width="6" height="6" rx="1.2" class="cm-b cm-b--dim"/>
+        <rect x="2" y="18" width="6" height="6" rx="1.2" class="cm-b"/><rect x="18" y="26" width="6" height="6" rx="1.2" class="cm-b cm-b--dim"/>
+        <rect x="26" y="18" width="6" height="6" rx="1.2" class="cm-b"/><rect x="10" y="10" width="14" height="14" rx="2.4" class="cm-core"/>
+        <rect x="26" y="0" width="6" height="6" rx="1.2" class="cm-spark"/>
+      </g>
+      <text x="150" y="246" text-anchor="middle" class="route__core-label">CoreByte</text>
+    </g>
+
+    <!-- api / software nodes -->
+    <% nodes.forEach((n, i) => { %>
+      <g class="route__node route__node--api" style="--i:<%= i %>">
+        <rect x="248" y="<%= n.y - 17 %>" width="108" height="34" rx="9"/>
+        <use href="<%= sprite %><%= n.icon %>" x="258" y="<%= n.y - 8 %>" width="16" height="16"/>
+        <text x="281" y="<%= n.y + 4.5 %>"><%= n.label %></text>
+      </g>
+    <% }) %>
+
+    <!-- business -->
+    <g class="route__node route__node--end route__node--biz">
+      <circle cx="408" cy="190" r="22"/>
+      <use href="<%= sprite %>chart" x="398" y="180" width="20" height="20"/>
+      <text x="408" y="232" text-anchor="middle">Business</text>
+    </g>
+  </svg>
+
+  <div class="term" data-terminal aria-hidden="true">
+    <div class="term__bar">
+      <span class="term__dots"><i></i><i></i><i></i></span>
+      <span class="term__tabs"><b data-term-tab="SF">SF</b><b data-term-tab="ASR">ASR</b><b data-term-tab="DP">DP</b></span>
+      <span class="term__file">sample-message.json</span>
+    </div>
+    <pre class="term__body"><code data-term-code>{
+  "messageType": "SF",
+  "shippingBill": "1234567",
+  "container": "TGHU4829156",
+  "packages": "1-5",
+  "custodian": "ACU-LDH"
+}</code><span class="term__caret"></span></pre>
+    <div class="term__status" data-term-status><%- icon('check') %> <span data-term-status-text>ACK received · officer approval</span></div>
+  </div>
+
+  <div class="float-chip float-chip--a" aria-hidden="true">
+    <span class="float-chip__k">Net weight</span><span class="float-chip__v">24,180 kg</span>
+  </div>
+  <div class="float-chip float-chip--b" aria-hidden="true">
+    <span class="float-chip__dot"></span><span class="float-chip__k">Gate in</span><span class="float-chip__v">TGHU4829156</span>
+  </div>
+</div>

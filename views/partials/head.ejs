@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-IN" data-mode="<%= typeof forceMode !== 'undefined' ? forceMode : 'tech' %>"<% if (typeof forceMode !== 'undefined') { %> data-force="<%= forceMode %>"<% } %>>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <% if (meta.noindex) { %><meta name="robots" content="noindex, follow"><% } else { %><meta name="robots" content="index, follow, max-image-preview:large"><% } %>
+  <meta name="theme-color" content="#070B17">
+  <meta name="color-scheme" content="dark">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="<%= meta.ogType %>">
+  <meta property="og:site_name" content="<%= site.name %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CoreByte Solutions — Custom Software, Web, AI and CFS & ICEGATE Solutions">
+  <meta property="og:locale" content="<%= site.locale %>">
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= meta.title %>">
+  <meta name="twitter:description" content="<%= meta.description %>">
+  <meta name="twitter:image" content="<%= meta.ogImage %>">
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,750&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/style.css?v=<%= v %>">
+  <link rel="stylesheet" href="/css/animations.css?v=<%= v %>">
+  <link rel="stylesheet" href="/css/responsive.css?v=<%= v %>">
+
+  <script nonce="<%= nonce %>">
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js', 'reveal-ready');
+      if (window.CSS && CSS.supports && CSS.supports('view-transition-name: none')) d.classList.add('vt');
+      try {
+        var forced = d.getAttribute('data-force');
+        var m = localStorage.getItem('cb-mode');
+        if (forced) d.setAttribute('data-mode', forced);
+        else if (m === 'tech' || m === 'trade') d.setAttribute('data-mode', m);
+        if (m !== 'tech' && m !== 'trade') d.classList.add('needs-mode');
+        if (sessionStorage.getItem('cb-loaded')) d.classList.add('no-loader');
+      } catch (e) { d.classList.add('no-loader'); }
+    })();
+  </script>
+  <script type="application/ld+json"><%- meta.jsonLd %></script>
+</head>
+<body class="page-<%= page %>">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <%- include('logo-mark', { size: 56, cls: 'loader__mark' }) %>
+      <div class="loader__word"><span>C</span><span>O</span><span>R</span><span>E</span><span>B</span><span>Y</span><span>T</span><span>E</span></div>
+      <div class="loader__bar"><i></i></div>
+    </div>
+  </div>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <%- include('navbar') %>

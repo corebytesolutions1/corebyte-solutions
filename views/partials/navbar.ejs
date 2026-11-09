@@ -1,0 +1,107 @@
+<%
+  const sol = allServices.filter(s => s.group === 'solutions');
+  const core = allServices.filter(s => s.group === 'services');
+  const infra = allServices.filter(s => s.group === 'infrastructure');
+  const isActive = (href) => href === '/' ? path === '/' : (path === href || path.startsWith(href + '/') ||
+    (href === '/solutions' && sol.some(s => path === '/services/' + s.slug)) );
+  const isServicesActive = path === '/services' || (path.startsWith('/services/') && !sol.some(s => path === '/services/' + s.slug));
+%>
+<header class="site-header" data-header>
+  <div class="container header__bar">
+    <a class="brand" href="/" aria-label="CoreByte Solutions — home">
+      <%- include('logo-mark', { size: 30, cls: '' }) %>
+      <span class="brand__word">CoreByte<span class="brand__sub">Solutions</span></span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" data-nav-toggle>
+      <span class="nav-toggle__lines" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">Open menu</span>
+    </button>
+
+    <div class="nav-scrim" data-nav-scrim hidden></div>
+
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-nav>
+      <div class="site-nav__head">
+        <span class="site-nav__title">Menu</span>
+        <button class="nav-close" type="button" data-nav-close>
+          <%- icon('x') %><span class="sr-only">Close menu</span>
+        </button>
+      </div>
+
+      <ul class="nav-list" role="list">
+        <% site.nav.forEach((item, idx) => { const active = item.menu === 'services' ? isServicesActive : isActive(item.href); %>
+          <li class="nav-item<%= item.menu ? ' has-menu' : '' %>" <% if (item.menu) { %>data-menu-item<% } %>>
+            <% if (!item.menu) { %>
+              <a class="nav-link" href="<%= item.href %>"<% if (active) { %> aria-current="page"<% } %>><%= item.label %></a>
+            <% } else { %>
+              <div class="nav-link-row">
+                <a class="nav-link" href="<%= item.href %>"<% if (active) { %> aria-current="page"<% } %>><%= item.label %></a>
+                <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu-<%= item.menu %>" data-menu-btn>
+                  <%- icon('chevron-down') %><span class="sr-only"><%= item.label %> submenu</span>
+                </button>
+              </div>
+              <div class="mega" id="menu-<%= item.menu %>" data-mega>
+                <div class="mega__inner">
+                  <% if (item.menu === 'solutions') { %>
+                    <div class="mega__col mega__col--wide">
+                      <p class="mega__label">Industry solutions</p>
+                      <ul class="mega__grid" role="list">
+                        <% sol.forEach(s => { %>
+                          <li><a class="mega__link" href="/services/<%= s.slug %>">
+                            <span class="mega__icon"><%- icon(s.icon) %></span>
+                            <span><strong><%= s.title %></strong><small><%= s.short %></small></span>
+                          </a></li>
+                        <% }) %>
+                      </ul>
+                    </div>
+                    <div class="mega__aside">
+                      <p class="mega__aside-title">Working with ICEGATE/SCMTR?</p>
+                      <p>We build SCMTR CIM message tools — SF, ASR, DP, DT, AR and AT — filed in sequence with ACKs and CIM numbers tracked.</p>
+                      <a class="text-link" href="/services/icegate-scmtr-solutions">See message tools <%- icon('arrow-right') %></a>
+                    </div>
+                  <% } else { %>
+                    <div class="mega__col">
+                      <p class="mega__label">Build</p>
+                      <ul class="mega__list" role="list">
+                        <% core.forEach(s => { %>
+                          <li><a class="mega__link" href="/services/<%= s.slug %>">
+                            <span class="mega__icon"><%- icon(s.icon) %></span>
+                            <span><strong><%= s.title %></strong><small><%= s.short %></small></span>
+                          </a></li>
+                        <% }) %>
+                      </ul>
+                    </div>
+                    <div class="mega__col">
+                      <p class="mega__label">Host &amp; run</p>
+                      <ul class="mega__list" role="list">
+                        <% infra.forEach(s => { %>
+                          <li><a class="mega__link" href="/services/<%= s.slug %>">
+                            <span class="mega__icon"><%- icon(s.icon) %></span>
+                            <span><strong><%= s.title %></strong><small><%= s.short %></small></span>
+                          </a></li>
+                        <% }) %>
+                      </ul>
+                    </div>
+                    <a class="mega__all" href="/services">All services <%- icon('arrow-right') %></a>
+                  <% } %>
+                </div>
+              </div>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="mode-link mode-link--to-trade" href="/trade" data-set-mode="trade">
+          <%- icon('ship') %><span>Explore Trade</span>
+        </a>
+        <a class="mode-link mode-link--to-tech" href="/" data-set-mode="tech">
+          <%- icon('cpu') %><span>Explore Technology</span>
+        </a>
+        <a class="btn btn--primary btn--sm" href="/contact#enquiry" data-magnetic>
+          <span>Start a project</span><%- icon('arrow-right', 'btn__arrow') %>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>

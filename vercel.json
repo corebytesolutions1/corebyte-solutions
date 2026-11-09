@@ -1,15 +1,30 @@
 {
-  "version": 2,
-  "builds": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.corebytex.com" }],
+      "destination": "https://corebytex.com/:path",
+      "permanent": true
     }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/.*",
-      "dest": "server.js"
+      "source": "/(css|js)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/(favicon|images|icons)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
     }
   ]
 }

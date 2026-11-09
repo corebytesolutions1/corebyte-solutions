@@ -1,0 +1,33 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <%- include('../partials/page-hero', { heading: 'Services', lead: 'Custom software, web development, AI integration, specialised industry solutions, and the domain, hosting and email infrastructure to run them.' }) %>
+
+  <% [['Industry solutions', 'For CFS, customs-related, weighbridge and transport operations.', solutions],
+      ['Build', 'Applications, websites and AI shaped around your workflow.', coreServices],
+      ['Host & run', 'Professional digital infrastructure without unnecessary enterprise-level costs.', infra]].forEach(([label, desc, list], gi) => { %>
+    <section class="section section--tight<%= gi % 2 ? ' section--deep' : '' %>" aria-labelledby="grp-<%= gi %>">
+      <div class="container">
+        <div class="section-head section-head--split" data-reveal>
+          <h2 id="grp-<%= gi %>" class="section-title section-title--sm"><%= label %></h2>
+          <p class="section-lead"><%= desc %></p>
+        </div>
+        <div class="svc-cards">
+          <% list.forEach((s, i) => { %>
+            <a class="svc-card<%= s.highlight ? ' svc-card--hl' : '' %>" href="/services/<%= s.slug %>" data-reveal data-spotlight style="--d:<%= i %>">
+              <span class="svc-card__icon"><%- icon(s.icon) %></span>
+              <h3><%= s.title %></h3>
+              <p><%= s.short %></p>
+              <ul class="dash-list" role="list">
+                <% s.features.slice(0, 4).forEach(f => { %><li><%= f[0] %></li><% }) %>
+              </ul>
+              <span class="svc-card__go">View service <%- icon('arrow-right') %></span>
+            </a>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  <% }) %>
+
+  <%- include('../partials/cta') %>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,371 @@
+<%- include('../partials/head') %>
+<main id="main">
+
+  <!-- ================= TECH HERO ================= -->
+  <section class="hero hero--tech tech-only" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="hero__status"><span class="pulse-dot" aria-hidden="true"></span>Custom Software • Web Development • AI • CFS &amp; ICEGATE Solutions</p>
+        <h1 id="hero-title" class="hero__title">
+          <span class="line"><span>We build the technology</span></span>
+          <span class="line"><span>behind your business.</span></span>
+        </h1>
+        <p class="hero__lead">Custom software, intelligent web solutions, AI integration and specialised CFS &amp; ICEGATE automation — engineered around the way your business actually works.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg" href="/contact#enquiry" data-magnetic><span>Start a project</span><%- icon('arrow-right', 'btn__arrow') %></a>
+          <a class="btn btn--ghost btn--lg" href="#solutions" data-magnetic><span>Explore solutions</span><%- icon('arrow-down', 'btn__arrow') %></a>
+        </div>
+        <ul class="hero__chips" role="list">
+          <li>Desktop &amp; LAN apps</li><li>Web apps</li><li>SCMTR CIM messages</li><li>Weighbridge</li><li>AI tools</li>
+        </ul>
+      </div>
+      <div class="hero__visual">
+        <%- include('../partials/hero-visual') %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRADE HERO ================= -->
+  <section class="hero hero--trade trade-only" aria-labelledby="trade-hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <span class="badge-soon badge-soon--lg"><span class="pulse-dot" aria-hidden="true"></span>Coming soon</span>
+        <h2 id="trade-hero-title" class="hero__title">
+          <span class="line"><span>Customs &amp; trade.</span></span>
+          <span class="line"><span>Coming soon.</span></span>
+        </h2>
+        <p class="hero__lead">CoreByte Solutions is preparing to offer Customs House Agent (CHA) services and to enter selected import/export activities covering miscellaneous goods, household products, food items, old/used vehicles and other legally tradable commodities.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg" href="#notify" data-magnetic><span>Notify me when we launch</span><%- icon('bell', 'btn__arrow') %></a>
+          <button class="btn btn--ghost btn--lg" type="button" data-set-mode="tech" data-magnetic><span>Explore technology services</span><%- icon('cpu', 'btn__arrow') %></button>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <%- include('../partials/trade-visual') %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODE SELECTOR ================= -->
+  <section class="mode-strip" aria-labelledby="mode-strip-title">
+    <div class="container"><div class="mode-strip__inner">
+      <h2 id="mode-strip-title" class="mode-strip__title">What brings you to CoreByte?</h2>
+      <div class="mode-strip__opts">
+        <button type="button" class="mode-opt mode-opt--tech" data-choose-mode="tech">
+          <%- icon('cpu') %><span><strong>Technology</strong><small>Software • Web • AI • ICEGATE • Automation</small></span>
+        </button>
+        <button type="button" class="mode-opt mode-opt--trade" data-choose-mode="trade">
+          <%- icon('ship') %><span><strong>CHA &amp; Import / Export</strong><small>Customs clearance • Trading • Household • Food • Vehicles</small></span>
+          <span class="badge-soon">Soon</span>
+        </button>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- ================= TRADE: CATEGORIES + NOTIFY ================= -->
+  <section class="section trade-only" aria-labelledby="trade-cats-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="trade-cats-title" class="section-title">What we’re preparing</h2>
+        <p class="section-lead">CoreByte Solutions is preparing to offer Customs House Agent services and to expand into selected import/export activities. Services, product categories and trading operations will be announced soon.</p>
+      </div>
+      <%- include('../partials/trade-categories', { tradeCategories: content.tradeCategories, cha: content.cha }) %>
+    </div>
+  </section>
+
+  <section class="section section--tight trade-only" id="notify" aria-labelledby="notify-title">
+    <div class="container">
+      <div class="notify-panel" data-reveal data-spotlight>
+        <div>
+          <h2 id="notify-title" class="section-title section-title--sm">Notify me when we launch</h2>
+          <p>Leave your email and we’ll tell you when CHA services and trading operations are announced. No other mailings.</p>
+        </div>
+        <%- include('../partials/notify-form') %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight trade-only" aria-labelledby="bridge-title">
+    <div class="container">
+      <div class="bridge" data-reveal>
+        <div>
+          <h2 id="bridge-title" class="section-title section-title--sm">Our technology business is open now</h2>
+          <p>Custom software, web development, AI, CFS and ICEGATE/SCMTR tools, weighbridge and transport software, hosting and business email.</p>
+        </div>
+        <button class="btn btn--ghost" type="button" data-set-mode="tech"><span>Switch to technology</span><%- icon('arrow-right', 'btn__arrow') %></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLIENTS STRIP ================= -->
+  <section class="clients-strip" aria-labelledby="clients-strip-title">
+    <div class="container"><div class="clients-strip__inner">
+      <h2 id="clients-strip-title" class="clients-strip__title">Trusted by businesses</h2>
+      <ul class="clients-strip__list" role="list">
+        <% site.clients.forEach(c => { %>
+          <li><a href="<%= c.url %>" target="_blank" rel="noopener noreferrer"><strong><%= c.name %></strong><small><%= c.category %></small><span class="sr-only">(opens in a new tab)</span></a></li>
+        <% }) %>
+      </ul>
+    </div></div>
+  </section>
+
+  <!-- ================= CORE SERVICES INDEX ================= -->
+  <section class="section tech-only" id="solutions" aria-labelledby="core-title">
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <h2 id="core-title" class="section-title">Software that fits the way you work.</h2>
+        <p class="section-lead">Ten service lines, one team. Specialised industry software for logistics and customs-related operations, core development services, and the infrastructure to run it all.</p>
+      </div>
+      <div class="svc-index">
+        <% [['Industry solutions', solutions], ['Build', coreServices], ['Host & run', infra]].forEach(([label, list], gi) => { %>
+          <div class="svc-index__group" data-reveal style="--d:<%= gi %>">
+            <h3 class="svc-index__label"><%= label %></h3>
+            <ul role="list">
+              <% list.forEach(s => { %>
+                <li><a class="svc-row<%= s.highlight ? ' svc-row--hl' : '' %>" href="/services/<%= s.slug %>">
+                  <span class="svc-row__icon"><%- icon(s.icon) %></span>
+                  <span class="svc-row__text"><strong><%= s.title %></strong><small><%= s.short %></small></span>
+                  <%- icon('arrow-up-right', 'svc-row__go') %>
+                </a></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CFS & ICEGATE SPOTLIGHT ================= -->
+  <section class="section section--deep tech-only" aria-labelledby="cfs-title">
+    <div class="container">
+      <div class="spot">
+        <div class="spot__copy" data-reveal>
+          <p class="kicker">Our specialty</p>
+          <h2 id="cfs-title" class="section-title">CFS &amp; ICEGATE solutions</h2>
+          <p class="section-lead">Container Freight Stations run on movements, weights, bills and customs messages that have to agree with each other. We build the software that keeps them connected — from the gate to the JSON file.</p>
+          <ul class="tick-list" role="list">
+            <li>Import/export container management, Gate In / Gate Out and delivery</li>
+            <li>Weighment, billing, transport and reporting on one database</li>
+            <li>Multi-PC / LAN operation across gate, weighbridge and office</li>
+            <li>SCMTR CIM messages (SF, ASR, DP, DT, AR, AT) filed in sequence through the ICEGATE API</li>
+          </ul>
+          <div class="spot__links">
+            <a class="btn btn--primary" href="/services/cfs-customs-software" data-magnetic><span>CFS software</span><%- icon('arrow-right', 'btn__arrow') %></a>
+            <a class="btn btn--ghost" href="/services/icegate-scmtr-solutions" data-magnetic><span>ICEGATE / SCMTR tools</span><%- icon('arrow-right', 'btn__arrow') %></a>
+          </div>
+        </div>
+
+        <div class="msg-console" data-reveal style="--d:1" data-spotlight>
+          <div class="msg-console__head">
+            <span>Export transshipment filing sequence</span>
+            <span class="msg-console__note">As per ICEGATE Advisory 41/2026 · each step after a positive ACK</span>
+          </div>
+          <ol class="pipeline" role="list">
+            <li><span class="pipeline__dot"></span><strong>SF · Custodian (ACU)</strong><small>Stuffing report, container-wise after LEO — ACK and officer approval</small></li>
+            <li><span class="pipeline__dot"></span><strong>ASR · Transhipper (ATP)</strong><small>Allowed for shipment, Shipping Bill-wise — validated against SF</small></li>
+            <li><span class="pipeline__dot"></span><strong>DP · Transhipper (ATP)</strong><small>Export departure with vehicle / train no. — ACK returns CIM number &amp; date</small></li>
+            <li><span class="pipeline__dot"></span><strong>DT · Custodian (ACU)</strong><small>Actual departure time recorded against the CIM</small></li>
+            <li><span class="pipeline__dot"></span><strong>AR · Transhipper (ATP)</strong><small>Arrival at the next unloading station's terminal gate</small></li>
+            <li><span class="pipeline__dot"></span><strong>AT · Terminal operator / Custodian</strong><small>Actual arrival time recorded against the CIM</small></li>
+          </ol>
+          <ul class="msg-types" role="list">
+            <li><b>SF</b><span>Stuffing report</span></li>
+            <li><b>ST</b><span>Stripping report</span></li>
+            <li><b>SFCN</b><span>Stuffing cancellation</span></li>
+            <li><b>ASR</b><span>Allowed for shipment</span></li>
+            <li><b>DP</b><span>Export departure</span></li>
+            <li><b>DT</b><span>Departure time</span></li>
+            <li><b>AR</b><span>Arrival at next station</span></li>
+            <li><b>AT</b><span>Arrival time</span></li>
+          </ul>
+          <%- include('../partials/disclaimer') %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUILD: CUSTOM / WEB / AI ================= -->
+  <section class="section tech-only" aria-labelledby="build-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="build-title" class="section-title">Custom software, web and AI</h2>
+        <p class="section-lead">The core of what we do: applications built for your process instead of the other way round.</p>
+      </div>
+      <div class="build">
+        <% coreServices.forEach((s, i) => { %>
+          <article class="build__col" data-reveal data-spotlight style="--d:<%= i %>">
+            <span class="build__icon"><%- icon(s.icon) %></span>
+            <h3><%= s.title %></h3>
+            <p><%= s.intro.split('. ')[0].replace(/\.$/, '') %>.</p>
+            <ul class="dash-list" role="list">
+              <% s.features.slice(0, 5).forEach(f => { %><li><%= f[0] %></li><% }) %>
+            </ul>
+            <a class="text-link" href="/services/<%= s.slug %>">Explore <%= s.title %> <%- icon('arrow-right') %></a>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WEIGHTMENT & TRANSPORT ================= -->
+  <section class="section section--deep tech-only" aria-labelledby="ops-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="ops-title" class="section-title">Weightment &amp; transport software</h2>
+        <p class="section-lead">Industrial software for the weighbridge and the transport office, printing the documents your operation runs on.</p>
+      </div>
+      <div class="ops">
+        <article class="ops__panel" data-reveal data-spotlight>
+          <div class="ops__text">
+            <h3><%- icon('scale') %> Weightment software</h3>
+            <p>Vehicle entry, first and second weighment, container, party and commodity details — with the net weight calculated and the slip printed.</p>
+            <ul class="tag-list" role="list">
+              <% ['Vehicle entry','Gross / tare / net','Container details','Party & commodity','Weight slips','Reports','Printer support','Multi-PC'].forEach(t => { %><li><%= t %></li><% }) %>
+            </ul>
+            <a class="text-link" href="/services/weightment-software">Weightment software <%- icon('arrow-right') %></a>
+          </div>
+          <div class="slip" aria-label="Sample weight slip" role="img">
+            <div class="slip__head"><span>Weight slip</span><span>No. W-1042</span></div>
+            <dl class="slip__rows">
+              <div><dt>Vehicle</dt><dd>PB10 XX 4821</dd></div>
+              <div><dt>Container</dt><dd>TGHU4829156</dd></div>
+              <div><dt>Gross</dt><dd data-count="32460">32,460</dd></div>
+              <div><dt>Tare</dt><dd data-count="8280">8,280</dd></div>
+              <div class="slip__net"><dt>Net (kg)</dt><dd data-count="24180">24,180</dd></div>
+            </dl>
+            <p class="slip__foot">Sample document</p>
+          </div>
+        </article>
+
+        <article class="ops__panel" data-reveal data-spotlight style="--d:1">
+          <div class="ops__text">
+            <h3><%- icon('truck') %> Transport &amp; bilty software</h3>
+            <p>Bookings become bilties, freight is calculated from your rates, and vehicles, drivers and parties stay organised in one database.</p>
+            <ul class="tag-list" role="list">
+              <% ['Transport booking','Bilty generation','Vehicles','Drivers','Parties','Freight calculation','Print-ready','Reports'].forEach(t => { %><li><%= t %></li><% }) %>
+            </ul>
+            <a class="text-link" href="/services/transport-bilty-software">Transport &amp; bilty software <%- icon('arrow-right') %></a>
+          </div>
+          <div class="slip slip--bilty" aria-label="Sample bilty" role="img">
+            <div class="slip__head"><span>Bilty</span><span>No. B-2207</span></div>
+            <div class="bilty-route"><span>Ludhiana</span><i aria-hidden="true"></i><span>Mundra</span></div>
+            <dl class="slip__rows">
+              <div><dt>Vehicle</dt><dd>PB10 XX 4821</dd></div>
+              <div><dt>Goods</dt><dd>General cargo</dd></div>
+              <div class="slip__net"><dt>Freight</dt><dd>₹ 48,500</dd></div>
+            </dl>
+            <p class="slip__foot">Sample document</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOSTING & DOMAIN ================= -->
+  <section class="section tech-only" aria-labelledby="infra-title">
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <h2 id="infra-title" class="section-title">Hosting, domain &amp; business email</h2>
+        <p class="section-lead">Professional digital infrastructure without unnecessary enterprise-level costs — set up by the same team that builds your software.</p>
+      </div>
+      <div class="infra">
+        <% infra.forEach((s, i) => { %>
+          <a class="infra__item" href="/services/<%= s.slug %>" data-reveal data-spotlight style="--d:<%= i %>">
+            <span class="infra__icon"><%- icon(s.icon) %></span>
+            <h3><%= s.title %></h3>
+            <ul class="tick-list tick-list--sm" role="list">
+              <% s.features.forEach(f => { %><li><%= f[0] %></li><% }) %>
+            </ul>
+            <span class="infra__go">Details <%- icon('arrow-right') %></span>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY COREBYTE ================= -->
+  <section class="section section--deep tech-only" aria-labelledby="why-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="why-title" class="section-title">Why CoreByte</h2>
+        <p class="section-lead">We don’t sell a fixed product and ask you to adapt. We learn the work, then write the software.</p>
+      </div>
+      <ul class="why" role="list">
+        <% content.why.forEach((w, i) => { %>
+          <li class="why__item" data-reveal style="--d:<%= i %>">
+            <span class="why__icon"><%- icon(w.icon) %></span>
+            <h3><%= w.title %></h3>
+            <p><%= w.text %></p>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= TECH STACK ================= -->
+  <section class="section tech-only" aria-labelledby="stack-title">
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <h2 id="stack-title" class="section-title">Technology we work with</h2>
+        <p class="section-lead">Chosen for reliability and long-term maintainability, not novelty.</p>
+      </div>
+      <ul class="stack" role="list" data-stack>
+        <% content.stack.forEach((t, i) => { %>
+          <li class="stack__item" style="--i:<%= i %>"><strong><%= t.name %></strong><small><%= t.group %></small></li>
+        <% }) %>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= PROCESS ================= -->
+  <section class="section section--deep tech-only" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="process-title" class="section-title">How a project runs</h2>
+        <p class="section-lead">Seven steps from first conversation to long-term support.</p>
+      </div>
+      <%- include('../partials/process', { steps: content.process }) %>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section class="section" aria-labelledby="projects-title">
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <h2 id="projects-title" class="section-title">Our existing client projects</h2>
+        <p class="section-lead">Work for businesses in exports and in container freight, logistics and customs-related operations.</p>
+      </div>
+      <%- include('../partials/clients') %>
+    </div>
+  </section>
+
+  <!-- ================= IMPORT/EXPORT TEASER ================= -->
+  <section class="section section--tight tech-only" aria-labelledby="trade-teaser-title">
+    <div class="container">
+      <div class="trade-teaser" data-reveal data-spotlight>
+        <span class="badge-soon badge-soon--lg"><span class="pulse-dot" aria-hidden="true"></span>Coming soon</span>
+        <h2 id="trade-teaser-title" class="section-title section-title--sm">Customs House Agent services &amp; Import / Export</h2>
+        <p>CoreByte Solutions is preparing to offer Customs House Agent (CHA) services and to expand into selected import/export activities. Details will be announced soon.</p>
+        <ul class="trade-teaser__cats" role="list">
+          <li><%- icon(content.cha.icon) %>CHA services</li>
+          <% content.tradeCategories.forEach(c => { %><li><%- icon(c.icon) %><%= c.title %></li><% }) %>
+        </ul>
+        <a class="btn btn--ghost" href="/trade" data-set-mode="trade"><span>Explore trade</span><%- icon('arrow-right', 'btn__arrow') %></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container faq-wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="faq-title" class="section-title">Questions, answered</h2>
+        <p class="section-lead">Can’t find what you need? <a class="text-link" href="/contact">Ask us directly</a>.</p>
+      </div>
+      <%- include('../partials/faq', { faq: content.faq }) %>
+    </div>
+  </section>
+
+  <%- include('../partials/cta') %>
+</main>
+<%- include('../partials/footer', { scripts: ['/js/hero.js', '/js/contact.js'] }) %>

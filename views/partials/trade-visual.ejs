@@ -1,0 +1,26 @@
+<%
+  const boxes = [
+    { x: 40,  y: 268, w: 116, t: 'a' }, { x: 162, y: 268, w: 116, t: 'b' }, { x: 284, y: 268, w: 116, t: 'c' },
+    { x: 100, y: 210, w: 116, t: 'c' }, { x: 222, y: 210, w: 116, t: 'a' },
+    { x: 162, y: 152, w: 116, t: 'b' }
+  ];
+%>
+<div class="cargo" aria-hidden="true">
+  <svg class="cargo__svg" viewBox="0 0 440 380">
+    <path id="sea-lane" class="cargo__lane" d="M30 110 C 130 20, 310 20, 410 110"/>
+    <circle cx="30" cy="110" r="5" class="cargo__port"/>
+    <circle cx="410" cy="110" r="5" class="cargo__port"/>
+    <g class="cargo__ship">
+      <circle r="6"/>
+      <animateMotion dur="6s" repeatCount="indefinite" rotate="auto"><mpath href="#sea-lane"/></animateMotion>
+    </g>
+    <% boxes.forEach((b, i) => { %>
+      <g class="box box--<%= b.t %>" style="--i:<%= i %>">
+        <rect x="<%= b.x %>" y="<%= b.y %>" width="<%= b.w %>" height="52" rx="3"/>
+        <% for (let k = 1; k < 10; k++) { %><line x1="<%= b.x + k * (b.w / 10) %>" y1="<%= b.y + 6 %>" x2="<%= b.x + k * (b.w / 10) %>" y2="<%= b.y + 46 %>"/><% } %>
+      </g>
+    <% }) %>
+    <line x1="20" y1="326" x2="420" y2="326" class="cargo__ground"/>
+  </svg>
+  <div class="cargo__stamp">Coming soon</div>
+</div>

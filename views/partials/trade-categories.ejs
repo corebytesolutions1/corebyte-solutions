@@ -1,0 +1,21 @@
+<ul class="trade-cats" role="list">
+  <% if (typeof cha !== 'undefined' && cha) { %>
+    <li class="trade-cat trade-cat--cha" data-reveal data-spotlight>
+      <span class="trade-cat__icon"><%- icon(cha.icon) %></span>
+      <div class="trade-cat__main">
+        <h3 class="trade-cat__title"><%= cha.title %></h3>
+        <p><%= cha.text %></p>
+        <ul class="tag-list" role="list"><% cha.items.forEach(t => { %><li><%= t %></li><% }) %></ul>
+      </div>
+      <span class="badge-soon">Coming soon</span>
+    </li>
+  <% } %>
+  <% tradeCategories.forEach((c, i) => { %>
+    <li class="trade-cat" data-reveal data-spotlight style="--d:<%= i + 1 %>">
+      <span class="trade-cat__icon"><%- icon(c.icon) %></span>
+      <h3 class="trade-cat__title"><%= c.title %></h3>
+      <p><%= c.text %></p>
+      <span class="badge-soon">Coming soon</span>
+    </li>
+  <% }) %>
+</ul>

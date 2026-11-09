@@ -1,0 +1,32 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <%- include('../partials/page-hero', { heading: 'Start a project', lead: 'Tell us what you’re trying to improve. We’ll read it properly and reply with questions or a next step.' }) %>
+
+  <section class="section section--tight">
+    <div class="container contact">
+      <div class="contact__form" data-reveal data-spotlight>
+        <%- include('../partials/contact-form') %>
+      </div>
+
+      <aside class="contact__side" data-reveal style="--d:1">
+        <div class="contact__block">
+          <h2 class="contact__h">Talk to CoreByte</h2>
+          <ul class="contact__list" role="list">
+            <li><%- icon('mail') %><span><small>Email</small><% if (site.contact.email) { %><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a><% } else { %><%- placeholder('', 'Business email') %><% } %></span></li>
+            <li><%- icon('map-pin') %><span><small>Location</small><%= site.location.city %>, <%= site.location.region %>, <%= site.location.country %><% if (site.contact.address) { %><br><%= site.contact.address %><% } %></span></li>
+            <li><%- icon('globe') %><span><small>Web</small><a href="<%= site.url %>"><%= site.domain %></a></span></li>
+          </ul>
+        </div>
+        <div class="contact__block">
+          <h2 class="contact__h">What happens next</h2>
+          <ol class="next-steps" role="list">
+            <li>We read your message and reply with any questions.</li>
+            <li>A short call to understand the workflow and constraints.</li>
+            <li>A written scope and plan before any development starts.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer', { scripts: ['/js/contact.js'] }) %>

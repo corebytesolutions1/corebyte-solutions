@@ -1,0 +1,34 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <%- include('../partials/page-hero', { heading: 'Software for logistics and customs-related operations', lead: 'Specialised systems for container freight stations, ICEGATE/SCMTR messaging, weighbridges and transport — built by a team that understands the work on the ground.' }) %>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="sol-list">
+        <% solutions.forEach((s, i) => { %>
+          <article class="sol" data-reveal data-spotlight style="--d:<%= i %>">
+            <div class="sol__head">
+              <span class="sol__icon"><%- icon(s.icon) %></span>
+              <div>
+                <h2 class="sol__title"><%= s.title %></h2>
+                <p class="sol__short"><%= s.short %></p>
+              </div>
+            </div>
+            <p><%= s.intro %></p>
+            <ul class="tag-list" role="list">
+              <% s.features.forEach(f => { %><li><%= f[0] %></li><% }) %>
+            </ul>
+            <% if (s.disclaimer) { %><%- include('../partials/disclaimer') %><% } %>
+            <div class="sol__actions">
+              <a class="btn btn--primary" href="/services/<%= s.slug %>" data-magnetic><span>View details</span><%- icon('arrow-right', 'btn__arrow') %></a>
+              <a class="text-link" href="/contact?service=<%= encodeURIComponent(s.formOption) %>#enquiry">Discuss your requirement <%- icon('arrow-right') %></a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/cta') %>
+</main>
+<%- include('../partials/footer') %>

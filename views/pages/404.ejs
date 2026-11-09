@@ -1,0 +1,16 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <section class="notfound">
+    <div class="container">
+      <p class="notfound__code" aria-hidden="true"><%= typeof error !== 'undefined' && error ? '500' : '404' %></p>
+      <h1 class="page-hero__title"><%= typeof error !== 'undefined' && error ? 'Something went wrong on our side' : 'This page doesn’t exist' %></h1>
+      <p class="page-hero__lead"><%= typeof error !== 'undefined' && error ? 'Refresh the page or try again in a minute.' : 'The link may be old or mistyped. These will get you back on track:' %></p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/"><span>Go to home</span><%- icon('arrow-right', 'btn__arrow') %></a>
+        <a class="btn btn--ghost" href="/services"><span>Browse services</span></a>
+        <a class="btn btn--ghost" href="/contact"><span>Contact us</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

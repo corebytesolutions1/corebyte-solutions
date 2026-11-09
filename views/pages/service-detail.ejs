@@ -1,0 +1,80 @@
+<%- include('../partials/head') %>
+<main id="main">
+  <section class="page-hero page-hero--service">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol role="list">
+          <li><a href="/">Home</a></li>
+          <li><a href="<%= parent.path %>"><%= parent.name %></a></li>
+          <li><span aria-current="page"><%= s.title %></span></li>
+        </ol>
+      </nav>
+      <div class="svc-hero">
+        <span class="svc-hero__icon" data-reveal><%- icon(s.icon) %></span>
+        <div>
+          <h1 class="page-hero__title" data-reveal><%= s.title %></h1>
+          <p class="page-hero__lead" data-reveal style="--d:1"><%= s.intro %></p>
+          <div class="hero__actions" data-reveal style="--d:2">
+            <a class="btn btn--primary btn--lg" href="/contact?service=<%= encodeURIComponent(s.formOption) %>#enquiry" data-magnetic><span>Start a project</span><%- icon('arrow-right', 'btn__arrow') %></a>
+            <a class="btn btn--ghost btn--lg" href="#features" data-magnetic><span>See what’s included</span><%- icon('arrow-down', 'btn__arrow') %></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="features" aria-labelledby="feat-title">
+    <div class="container">
+      <h2 id="feat-title" class="section-title section-title--sm" data-reveal>What’s included</h2>
+      <dl class="features">
+        <% s.features.forEach((f, i) => { %>
+          <div class="features__item" data-reveal style="--d:<%= i %>">
+            <dt><%- icon('check') %><%= f[0] %></dt>
+            <dd><%= f[1] %></dd>
+          </div>
+        <% }) %>
+      </dl>
+      <% if (s.disclaimer) { %><div class="mt-l" data-reveal><%- include('../partials/disclaimer') %></div><% } %>
+    </div>
+  </section>
+
+  <section class="section section--tight section--deep" aria-labelledby="solves-title">
+    <div class="container solves">
+      <div data-reveal>
+        <h2 id="solves-title" class="section-title section-title--sm">Problems this solves</h2>
+        <p class="section-lead">If any of these sound familiar, this is the right conversation to have.</p>
+      </div>
+      <ul class="solves__list" role="list">
+        <% s.solves.forEach((x, i) => { %><li data-reveal style="--d:<%= i %>"><%- icon('alert') %><span><%= x %></span></li><% }) %>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="how-title">
+    <div class="container">
+      <h2 id="how-title" class="section-title section-title--sm" data-reveal>How we deliver it</h2>
+      <%- include('../partials/process', { steps: content.process }) %>
+    </div>
+  </section>
+
+  <% if (related.length) { %>
+  <section class="section section--tight section--deep" aria-labelledby="rel-title">
+    <div class="container">
+      <h2 id="rel-title" class="section-title section-title--sm" data-reveal>Related</h2>
+      <div class="svc-cards svc-cards--3">
+        <% related.forEach((r, i) => { %>
+          <a class="svc-card" href="/services/<%= r.slug %>" data-reveal data-spotlight style="--d:<%= i %>">
+            <span class="svc-card__icon"><%- icon(r.icon) %></span>
+            <h3><%= r.title %></h3>
+            <p><%= r.short %></p>
+            <span class="svc-card__go">View service <%- icon('arrow-right') %></span>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <%- include('../partials/cta') %>
+</main>
+<%- include('../partials/footer') %>

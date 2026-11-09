@@ -1,0 +1,16 @@
+<section class="page-hero">
+  <div class="container">
+    <% if (meta.breadcrumbs && meta.breadcrumbs.length) { %>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol role="list">
+          <li><a href="/">Home</a></li>
+          <% meta.breadcrumbs.forEach((b, i) => { %>
+            <li><% if (i === meta.breadcrumbs.length - 1) { %><span aria-current="page"><%= b.name %></span><% } else { %><a href="<%= b.path %>"><%= b.name %></a><% } %></li>
+          <% }) %>
+        </ol>
+      </nav>
+    <% } %>
+    <h1 class="page-hero__title" data-reveal><%= heading %></h1>
+    <% if (typeof lead !== 'undefined' && lead) { %><p class="page-hero__lead" data-reveal style="--d:1"><%= lead %></p><% } %>
+  </div>
+</section>

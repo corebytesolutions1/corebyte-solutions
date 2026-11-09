@@ -1,255 +1,205 @@
-/* ============================================================
-   CoreByte Solutions — main.js
-   ============================================================ */
+/* CoreByte Solutions — core UI: header, navigation drawer, mega menus, ripple, toast. */
 (function () {
   'use strict';
 
-  /* ── EmailJS config ── */
-  const EMAILJS_PUBLIC_KEY  = '8t_obtLIkkufY4g-d';
-  const EMAILJS_SERVICE_ID  = 'service_1t7yl56';
-  const EMAILJS_TEMPLATE_ID = 'template_h6f2wbo';
-  if (typeof emailjs !== 'undefined') emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  var doc = document.documentElement;
+  var body = document.body;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var desktopNav = window.matchMedia('(min-width: 1100px)');
 
-  /* ── Touch detection ── */
-  const IS_TOUCH = !window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  window.CB = window.CB || {};
+  window.CB.reduceMotion = function () { return reduceMotion.matches; };
 
-  /* ── 1. Doodle canvas (desktop only) ── */
-  const canvas = document.getElementById('doodle-canvas');
-  const ctx    = canvas ? canvas.getContext('2d') : null;
-  let W = window.innerWidth, H = window.innerHeight;
+  // Mark the loader as seen for this browser session.
+  try { sessionStorage.setItem('cb-loaded', '1'); } catch (e) { /* storage blocked */ }
 
-  if (!IS_TOUCH && canvas && ctx) {
-    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
+  /* ---------------- Toast ---------------- */
+  var toastEl = document.querySelector('[data-toast]');
+  var toastTimer;
+  window.CB.toast = function (msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2400);
+  };
 
-    const TYPES  = ['star','heart','circle','triangle','squiggle','diamond'];
-    const COLORS = ['#FF6B35','#00C9A7','#BB86FC','#FFD166','#06D6A0','#EF476F'];
+  /* ---------------- Scroll lock (iOS-safe) ---------------- */
+  var lockY = 0;
+  var locked = false;
+  window.CB.lockScroll = function () {
+    if (locked) return;
+    locked = true;
+    lockY = window.scrollY || window.pageYOffset;
+    body.style.position = 'fixed';
+    body.style.top = -lockY + 'px';
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+  };
+  window.CB.unlockScroll = function () {
+    if (!locked) return;
+    locked = false;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.width = '';
+    var prev = doc.style.scrollBehavior;
+    doc.style.scrollBehavior = 'auto';
+    window.scrollTo(0, lockY);
+    doc.style.scrollBehavior = prev;
+  };
 
-    class Doodle {
-      constructor(i) {
-        this.x = Math.random() * W; this.y = Math.random() * H;
-        this.size = 10 + i * 2.2; this.color = COLORS[i % COLORS.length];
-        this.type = TYPES[i % TYPES.length]; this.speed = 0.015 + i * 0.008;
-        this.rot = Math.random() * Math.PI * 2; this.rotSpd = (Math.random()-.5)*.07;
-        this.alpha = 0.5 + Math.random()*.35; this.wob = Math.random()*Math.PI*2;
-        this.wobSpd = 0.04 + Math.random()*.04;
-        this.ox = (Math.random()-.5)*80; this.oy = (Math.random()-.5)*60;
-      }
-      update(mx,my) {
-        this.x += (mx+this.ox - this.x)*this.speed;
-        this.y += (my+this.oy - this.y)*this.speed;
-        this.rot += this.rotSpd; this.wob += this.wobSpd;
-      }
-      draw(c) {
-        c.save(); c.translate(this.x,this.y); c.rotate(this.rot);
-        c.globalAlpha = this.alpha*(0.82+0.18*Math.sin(this.wob));
-        c.strokeStyle = this.color; c.fillStyle = this.color+'20';
-        c.lineWidth=2; c.lineCap='round'; c.lineJoin='round';
-        const s=this.size;
-        switch(this.type){
-          case 'star':    drawStar(c,s);break;
-          case 'heart':   drawHeart(c,s);break;
-          case 'circle':  c.beginPath();c.arc(0,0,s*.5,0,Math.PI*2);c.fill();c.stroke();break;
-          case 'triangle':c.beginPath();c.moveTo(0,-s*.6);c.lineTo(s*.55,s*.45);c.lineTo(-s*.55,s*.45);c.closePath();c.fill();c.stroke();break;
-          case 'squiggle':c.beginPath();c.moveTo(-s*.6,0);c.bezierCurveTo(-s*.3,-s*.5,s*.3,s*.5,s*.6,0);c.stroke();break;
-          case 'diamond': c.beginPath();c.moveTo(0,-s*.6);c.lineTo(s*.4,0);c.lineTo(0,s*.6);c.lineTo(-s*.4,0);c.closePath();c.fill();c.stroke();break;
-        }
-        c.restore();
-      }
-    }
-    function drawStar(c,s){
-      let r=-Math.PI/2,step=Math.PI/5;
-      c.beginPath();c.moveTo(Math.cos(r)*s,Math.sin(r)*s);
-      for(let i=0;i<5;i++){r+=step;c.lineTo(Math.cos(r)*s*.42,Math.sin(r)*s*.42);r+=step;c.lineTo(Math.cos(r)*s,Math.sin(r)*s);}
-      c.closePath();
-    }
-    function drawHeart(c,s){
-      s*=.55;c.beginPath();c.moveTo(0,s*.3);
-      c.bezierCurveTo(0,-s*.3,-s,-s*.3,-s,s*.2);c.bezierCurveTo(-s,s*.7,0,s,0,s*1.1);
-      c.bezierCurveTo(0,s,s,s*.7,s,s*.2);c.bezierCurveTo(s,-s*.3,0,-s*.3,0,s*.3);c.closePath();
-    }
+  /* ---------------- Focus trap helper ---------------- */
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])';
+  window.CB.trapFocus = function (container, e) {
+    if (e.key !== 'Tab') return;
+    var items = Array.prototype.filter.call(container.querySelectorAll(FOCUSABLE), function (el) {
+      return el.offsetParent !== null || el === document.activeElement;
+    });
+    if (!items.length) return;
+    var first = items[0];
+    var last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
 
-    const doodles = Array.from({length:8},(_,i)=>new Doodle(i));
-    let mx=-300,my=-300,onPage=false;
-    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;onPage=true;},{passive:true});
-    document.addEventListener('mouseleave',()=>{onPage=false;},{passive:true});
-    (function loop(){
-      ctx.clearRect(0,0,W,H);
-      if(onPage) doodles.forEach(d=>{d.update(mx,my);d.draw(ctx);});
-      requestAnimationFrame(loop);
-    })();
+  /* ---------------- Header state ---------------- */
+  var header = document.querySelector('[data-header]');
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      if (header) header.classList.toggle('is-scrolled', (window.scrollY || 0) > 8);
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-    /* Custom cursor */
-    const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
-    let dx=-100,dy=-100,rx=-100,ry=-100;
-    document.addEventListener('mousemove',e=>{dx=e.clientX;dy=e.clientY;},{passive:true});
-    (function cursorLoop(){
-      if(dot){dot.style.left=dx+'px';dot.style.top=dy+'px';}
-      rx+=(dx-rx)*.12;ry+=(dy-ry)*.12;
-      if(ring){ring.style.left=rx+'px';ring.style.top=ry+'px';}
-      requestAnimationFrame(cursorLoop);
-    })();
-    document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{
-      el.addEventListener('mouseenter',()=>{if(ring){ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='#FF6B35';}if(dot)dot.style.background='#00C9A7';});
-      el.addEventListener('mouseleave',()=>{if(ring){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='#00C9A7';}if(dot)dot.style.background='#FF6B35';});
+  /* ---------------- Navigation drawer ---------------- */
+  var nav = document.querySelector('[data-nav]');
+  var toggle = document.querySelector('[data-nav-toggle]');
+  var closeBtn = document.querySelector('[data-nav-close]');
+  var scrim = document.querySelector('[data-nav-scrim]');
+  var menuItems = Array.prototype.slice.call(document.querySelectorAll('[data-menu-item]'));
+  var drawerOpen = false;
+
+  function setMenu(item, open) {
+    var btn = item.querySelector('[data-menu-btn]');
+    item.classList.toggle('is-open', open);
+    item.classList.remove('is-closed');
+    if (btn) btn.setAttribute('aria-expanded', String(open));
+  }
+  function closeAllMenus(except) {
+    menuItems.forEach(function (it) { if (it !== except) setMenu(it, false); });
+  }
+
+  function openDrawer() {
+    if (!nav || drawerOpen) return;
+    drawerOpen = true;
+    scrim.hidden = false;
+    // force reflow so the scrim transition runs
+    void scrim.offsetWidth;
+    scrim.classList.add('is-visible');
+    nav.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    window.CB.lockScroll();
+    setTimeout(function () { if (closeBtn) closeBtn.focus(); }, 60);
+  }
+  function closeDrawer(returnFocus) {
+    if (!nav || !drawerOpen) return;
+    drawerOpen = false;
+    nav.classList.remove('is-open');
+    scrim.classList.remove('is-visible');
+    toggle.setAttribute('aria-expanded', 'false');
+    window.CB.unlockScroll();
+    closeAllMenus();
+    setTimeout(function () { if (!drawerOpen) scrim.hidden = true; }, 320);
+    if (returnFocus !== false && toggle) toggle.focus();
+  }
+  window.CB.closeDrawer = closeDrawer;
+
+  if (toggle) toggle.addEventListener('click', function () { drawerOpen ? closeDrawer() : openDrawer(); });
+  if (closeBtn) closeBtn.addEventListener('click', function () { closeDrawer(); });
+  if (scrim) scrim.addEventListener('click', function () { closeDrawer(); });
+
+  if (nav) {
+    nav.addEventListener('keydown', function (e) {
+      if (drawerOpen) window.CB.trapFocus(nav, e);
+    });
+    // Close the drawer after choosing a destination.
+    nav.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href]');
+      if (!link) return;
+      if (drawerOpen) closeDrawer(false);
+      else closeAllMenus();
     });
   }
 
-  /* ── 2. Navbar scroll ── */
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 30);
-  }, { passive: true });
-
-  /* ── 3. Mobile menu (new separate panel) ── */
-  const hamburger  = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const backdrop   = document.getElementById('navBackdrop');
-  let scrollY_saved = 0;
-
-  function openMenu() {
-    scrollY_saved = window.scrollY;
-    mobileMenu.classList.add('open');
-    mobileMenu.setAttribute('aria-hidden','false');
-    backdrop.classList.add('show');
-    hamburger.classList.add('active');
-    hamburger.setAttribute('aria-expanded','true');
-    document.body.classList.add('nav-open');
-    document.body.style.top = '-' + scrollY_saved + 'px';
-    navbar.classList.add('has-bg');
-  }
-  function closeMenu() {
-    mobileMenu.classList.remove('open');
-    mobileMenu.setAttribute('aria-hidden','true');
-    backdrop.classList.remove('show');
-    hamburger.classList.remove('active');
-    hamburger.setAttribute('aria-expanded','false');
-    document.body.classList.remove('nav-open');
-    document.body.style.top = '';
-    window.scrollTo(0, scrollY_saved);
-    navbar.classList.remove('has-bg');
-  }
-
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () =>
-      mobileMenu.classList.contains('open') ? closeMenu() : openMenu()
-    );
-    mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-nav-cta').forEach(l =>
-      l.addEventListener('click', closeMenu)
-    );
-    backdrop.addEventListener('click', closeMenu);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-    window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-  }
-
-  /* ── 4. Smooth scroll ── */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', function(e) {
-      const t = document.querySelector(this.getAttribute('href'));
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  // Submenu buttons: accordion in the drawer, click/keyboard dropdown on desktop.
+  menuItems.forEach(function (item) {
+    var btn = item.querySelector('[data-menu-btn]');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !item.classList.contains('is-open');
+      closeAllMenus(item);
+      setMenu(item, open);
+      if (!open && desktopNav.matches) item.classList.add('is-closed');
+    });
+    item.addEventListener('mouseleave', function () {
+      if (!desktopNav.matches) return;
+      item.classList.remove('is-closed');
+      setMenu(item, false);
     });
   });
 
-  /* ── 5. Scroll reveal ── */
-  const ro = new IntersectionObserver((entries) => {
-    entries.forEach((en, i) => {
-      if (en.isIntersecting) {
-        setTimeout(() => en.target.classList.add('visible'), i * 90);
-        ro.unobserve(en.target);
-      }
+  document.addEventListener('click', function (e) {
+    if (desktopNav.matches && !e.target.closest('[data-menu-item]')) closeAllMenus();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (drawerOpen) { closeDrawer(); return; }
+    var open = menuItems.filter(function (it) { return it.classList.contains('is-open') || it.contains(document.activeElement); });
+    open.forEach(function (it) {
+      setMenu(it, false);
+      it.classList.add('is-closed');
+      var btn = it.querySelector('[data-menu-btn]');
+      if (btn && it.contains(document.activeElement)) btn.focus();
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  });
 
-  /* ── 6. Active nav on scroll ── */
-  const sections   = document.querySelectorAll('section[id]');
-  const desktopNav = document.querySelectorAll('.desktop-nav .nav-link');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  window.addEventListener('scroll', () => {
-    const sy = window.scrollY + 120;
-    sections.forEach(sec => {
-      if (sy >= sec.offsetTop && sy < sec.offsetTop + sec.offsetHeight) {
-        desktopNav.forEach(a => a.classList.remove('active'));
-        mobileNavLinks.forEach(a => a.classList.remove('active-link'));
-        const dMatch = document.querySelector(`.desktop-nav .nav-link[href="#${sec.id}"]`);
-        const mMatch = document.querySelector(`.mobile-nav-link[href="#${sec.id}"]`);
-        if (dMatch) dMatch.classList.add('active');
-        if (mMatch) mMatch.classList.add('active-link');
-      }
-    });
-  }, { passive: true });
+  // Leaving drawer breakpoint while open: reset.
+  var onBp = function () { if (desktopNav.matches) closeDrawer(false); closeAllMenus(); };
+  if (desktopNav.addEventListener) desktopNav.addEventListener('change', onBp);
+  else if (desktopNav.addListener) desktopNav.addListener(onBp);
 
-  /* ── 7. Contact form (EmailJS) ── */
-  const form      = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const successBox= document.getElementById('formSuccess');
-  const errorBox  = document.getElementById('formError');
+  /* ---------------- Click ripple ---------------- */
+  document.addEventListener('pointerdown', function (e) {
+    if (reduceMotion.matches) return;
+    var btn = e.target.closest('.btn, .mode-switch__btn, .mode-choice, .mode-opt');
+    if (!btn) return;
+    var rect = btn.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    var r = document.createElement('span');
+    r.className = 'ripple';
+    r.style.width = r.style.height = size + 'px';
+    r.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    r.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    if (getComputedStyle(btn).position === 'static') btn.style.position = 'relative';
+    btn.appendChild(r);
+    setTimeout(function () { r.remove(); }, 650);
+  });
 
-  if (form) {
-    const nameEl  = document.getElementById('cf-name');
-    const emailEl = document.getElementById('cf-email');
-    const msgEl   = document.getElementById('cf-message');
-
-    function showErr(id, show) {
-      const el = document.getElementById(id);
-      if (el) el.style.display = show ? 'block' : 'none';
-    }
-    function validate(el, errId, fn) {
-      const ok = fn(el.value.trim());
-      el.classList.toggle('invalid', !ok);
-      showErr(errId, !ok);
-      return ok;
-    }
-
-    nameEl.addEventListener('blur',  () => validate(nameEl,  'err-name',  v => v.length >= 2));
-    emailEl.addEventListener('blur', () => validate(emailEl, 'err-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)));
-    msgEl.addEventListener('blur',   () => validate(msgEl,   'err-msg',   v => v.length >= 20));
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const honey = form.querySelector('[name="_honey"]');
-      if (honey && honey.value) return;
-
-      const ok1 = validate(nameEl,  'err-name',  v => v.length >= 2);
-      const ok2 = validate(emailEl, 'err-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-      const ok3 = validate(msgEl,   'err-msg',   v => v.length >= 20);
-      if (!ok1 || !ok2 || !ok3) {
-        (form.querySelector('.invalid') || nameEl).scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
-      successBox.style.display = 'none';
-      errorBox.style.display   = 'none';
-
-      const serviceEl = document.getElementById('cf-service');
-      const phoneEl   = document.getElementById('cf-phone');
-
-      try {
-        if (typeof emailjs === 'undefined') throw new Error('EmailJS not loaded');
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          from_name  : nameEl.value.trim(),
-          from_email : emailEl.value.trim(),
-          from_phone : phoneEl ? phoneEl.value.trim() : '',
-          service    : serviceEl ? serviceEl.value || 'Not specified' : 'Not specified',
-          message    : msgEl.value.trim(),
-          reply_to   : emailEl.value.trim(),
-        });
-        form.reset();
-        successBox.style.display = 'block';
-        successBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
-        setTimeout(() => { successBox.style.display = 'none'; }, 7000);
-      } catch (err) {
-        console.error('[EmailJS]', err);
-        errorBox.style.display = 'block';
-        setTimeout(() => { errorBox.style.display = 'none'; }, 8000);
-      } finally {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-      }
-    });
-  }
-
+  /* ---------------- External links safety net ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('a[target="_blank"]'), function (a) {
+    var rel = (a.getAttribute('rel') || '').split(/\s+/);
+    if (rel.indexOf('noopener') === -1) rel.push('noopener');
+    if (rel.indexOf('noreferrer') === -1) rel.push('noreferrer');
+    a.setAttribute('rel', rel.join(' ').trim());
+  });
 })();

@@ -1,0 +1,49 @@
+<%- include('../partials/head', { forceMode: 'trade' }) %>
+<main id="main">
+  <section class="hero hero--trade hero--page" aria-labelledby="trade-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <ol role="list"><li><a href="/">Home</a></li><li><span aria-current="page">CHA &amp; Import / Export</span></li></ol>
+        </nav>
+        <span class="badge-soon badge-soon--lg"><span class="pulse-dot" aria-hidden="true"></span>Coming soon</span>
+        <h1 id="trade-title" class="hero__title">
+          <span class="line"><span>Customs &amp; trade.</span></span>
+          <span class="line"><span>Coming soon.</span></span>
+        </h1>
+        <p class="hero__lead">CoreByte Solutions is preparing to offer Customs House Agent (CHA) services and to enter selected import/export activities covering miscellaneous goods, household products, food items, old/used vehicles and other legally tradable commodities.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg" href="#notify" data-magnetic><span>Notify me when we launch</span><%- icon('bell', 'btn__arrow') %></a>
+          <a class="btn btn--ghost btn--lg" href="/" data-set-mode="tech" data-magnetic><span>Explore technology services</span><%- icon('cpu', 'btn__arrow') %></a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <%- include('../partials/trade-visual') %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="cats-title">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <h2 id="cats-title" class="section-title">What we’re preparing</h2>
+        <p class="section-lead">These services are not available yet. CHA services, product categories and trading operations will be announced at launch.</p>
+      </div>
+      <%- include('../partials/trade-categories', { tradeCategories: content.tradeCategories, cha: content.cha }) %>
+      <p class="note mt-l" data-reveal>CHA services will begin only after the applicable customs broker licence is obtained. All trading activity will be carried out only in legally tradable commodities and subject to applicable laws, licences and regulations.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="notify" aria-labelledby="notify-title">
+    <div class="container">
+      <div class="notify-panel" data-reveal data-spotlight>
+        <div>
+          <h2 id="notify-title" class="section-title section-title--sm">Notify me when we launch</h2>
+          <p>Leave your email and we’ll tell you when CHA services and trading operations are announced. No other mailings.</p>
+        </div>
+        <%- include('../partials/notify-form') %>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer', { scripts: ['/js/hero.js', '/js/contact.js'] }) %>

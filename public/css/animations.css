@@ -1,0 +1,123 @@
+/* =====================================================================
+   Motion — keyframes, loader, reveals, page transitions.
+   Everything here is switched off for prefers-reduced-motion at the end.
+   ===================================================================== */
+
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 currentColor; } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes shine { 0% { transform: translateX(-100%); } 40%, 100% { transform: translateX(100%); } }
+@keyframes dash { to { stroke-dashoffset: -16; } }
+@keyframes glow { 0%, 100% { opacity: 0.55; transform: scale(0.92); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes ripple { to { transform: scale(2.6); opacity: 0; } }
+@keyframes drop-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes fade-down { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes line-run { from { transform: translateX(0); } to { transform: translateX(-170%); } }
+@keyframes byte-hop { 0% { transform: none; } 40% { transform: translate(2px, -3px); } 100% { transform: none; } }
+@keyframes rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes pipe-lit { 0%, 18% { background: var(--acc); box-shadow: inset 0 0 0 2px var(--acc), 0 0 14px var(--acc); } 30%, 100% { background: var(--surface); box-shadow: inset 0 0 0 2px var(--acc); } }
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes reveal-failsafe { to { opacity: 1; transform: none; } }
+@keyframes box-in { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
+@keyframes loader-out { to { opacity: 0; visibility: hidden; } }
+@keyframes letter-in { from { opacity: 0; transform: translateY(0.4em); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes mark-in { 0% { transform: scale(0.6) rotate(-20deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+
+.pulse-dot { color: rgba(79, 224, 181, 0.6); }
+.badge-soon .pulse-dot { color: rgba(255, 138, 76, 0.6); }
+
+/* ---------- Loader (first page view per session, ~1s) ---------- */
+.loader {
+  position: fixed; inset: 0; z-index: 120; display: grid; place-items: center;
+  background: var(--bg);
+  animation: loader-out 0.45s 0.95s var(--ease) forwards;
+}
+html.no-loader .loader, html:not(.js) .loader { display: none; }
+.loader__inner { display: grid; justify-items: center; gap: 1rem; }
+.loader__mark { animation: mark-in 0.5s var(--ease) both; }
+.loader__mark .lm-byte, .loader__mark .lm-spark { animation: box-in 0.4s var(--ease) both; }
+.loader__mark .lm-b2 { animation-delay: 0.08s; }
+.loader__mark .lm-b3 { animation-delay: 0.14s; }
+.loader__mark .lm-b4 { animation-delay: 0.2s; }
+.loader__mark .lm-b5 { animation-delay: 0.26s; }
+.loader__mark .lm-spark { animation-delay: 0.34s; }
+.loader__word { display: flex; gap: 0.18em; font: 750 1.05rem var(--f-display); letter-spacing: 0.22em; color: var(--text); }
+.loader__word span { animation: letter-in 0.45s var(--ease) both; }
+.loader__word span:nth-child(1) { animation-delay: 0.10s; }
+.loader__word span:nth-child(2) { animation-delay: 0.14s; }
+.loader__word span:nth-child(3) { animation-delay: 0.18s; }
+.loader__word span:nth-child(4) { animation-delay: 0.22s; }
+.loader__word span:nth-child(5) { animation-delay: 0.30s; color: var(--acc); }
+.loader__word span:nth-child(6) { animation-delay: 0.34s; color: var(--acc); }
+.loader__word span:nth-child(7) { animation-delay: 0.38s; color: var(--acc); }
+.loader__word span:nth-child(8) { animation-delay: 0.42s; color: var(--acc); }
+.loader__bar { width: 120px; height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.loader__bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--acc), var(--acc-2)); transform-origin: left; animation: bar 0.85s var(--ease) both; }
+
+/* ---------- Hero entrance ---------- */
+:root { --enter: 1.05s; }
+html.no-loader { --enter: 0.1s; }
+.hero__title .line > span { animation: rise 0.9s var(--ease) both; animation-delay: var(--enter); }
+.hero__title .line:nth-child(2) > span { animation-delay: calc(var(--enter) + 0.1s); }
+.hero__copy > :not(.hero__title) { animation: page-in 0.7s var(--ease) both; animation-delay: calc(var(--enter) + 0.25s); }
+.hero__visual { animation: page-in 0.9s var(--ease) both; animation-delay: calc(var(--enter) + 0.3s); }
+.route__node--api { animation: page-in 0.5s var(--ease) both; animation-delay: calc(var(--enter) + 0.5s + var(--i) * 0.08s); }
+.box { animation: box-in 0.6s var(--ease) both; animation-delay: calc(var(--enter) + 0.3s + var(--i) * 0.09s); }
+.float-chip--a { animation: float-y 6s ease-in-out infinite; }
+.float-chip--b { animation: float-y 7s 1s ease-in-out infinite; }
+.pipeline__dot { animation: pipe-lit 5s infinite; }
+.pipeline li:nth-child(2) .pipeline__dot { animation-delay: 1s; }
+.pipeline li:nth-child(3) .pipeline__dot { animation-delay: 2s; }
+.pipeline li:nth-child(4) .pipeline__dot { animation-delay: 3s; }
+.pipeline li:nth-child(5) .pipeline__dot { animation-delay: 4s; }
+
+/* ---------- Scroll reveals ---------- */
+html.reveal-ready [data-reveal] {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: calc(var(--d, 0) * 70ms);
+}
+html.reveal-ready [data-reveal].is-in { opacity: 1; transform: none; }
+/* Failsafe: if the observer never runs, show content anyway after 3.5s */
+html.reveal-ready [data-reveal]:not(.is-in) { animation: reveal-failsafe 0.01s 3.5s forwards; }
+
+.stack__item { transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), box-shadow 0.3s, background-color 0.3s; }
+html.reveal-ready .stack:not(.is-in) .stack__item { opacity: 0; transform: translateY(10px) scale(0.97); }
+.stack.is-in .stack__item { transition-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms), 0s, 0s; }
+
+/* ---------- Mode change ---------- */
+main { transition: opacity 0.28s var(--ease), filter 0.28s var(--ease); }
+html.is-switching main { opacity: 0; filter: blur(6px); }
+.mode-overlay:not([hidden]) .mode-overlay__panel { animation: page-in 0.5s var(--ease) both; }
+.mode-overlay:not([hidden]) .mode-choice { animation: page-in 0.55s var(--ease) both; }
+.mode-overlay:not([hidden]) .mode-choice--trade { animation-delay: 0.08s; }
+.mode-overlay.is-closing { animation: loader-out 0.3s var(--ease) forwards; }
+
+/* ---------- Page transitions ---------- */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 0.22s var(--ease) both vt-out; }
+::view-transition-new(root) { animation: 0.38s var(--ease) both vt-in; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px) scale(0.995); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(8px) scale(1.005); } }
+html:not(.vt) main { animation: page-in 0.45s var(--ease) both; }
+.site-header { view-transition-name: header; }
+.mode-switch { view-transition-name: mode-switch; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .loader { display: none !important; }
+  html.reveal-ready [data-reveal], html.reveal-ready .stack .stack__item { opacity: 1 !important; transform: none !important; }
+  .route__packets, .cta__lines, .term__caret { display: none; }
+  @view-transition { navigation: none; }
+}

@@ -1,0 +1,25 @@
+<div class="mode-overlay" id="mode-overlay" role="dialog" aria-modal="true" aria-labelledby="mode-overlay-title" aria-describedby="mode-overlay-desc" hidden data-mode-overlay>
+  <div class="mode-overlay__panel">
+    <div class="mode-overlay__head">
+      <%- include('logo-mark', { size: 40, cls: '' }) %>
+      <h2 id="mode-overlay-title">Welcome to CoreByte Solutions</h2>
+      <p id="mode-overlay-desc">What are you looking for?</p>
+    </div>
+    <div class="mode-choices">
+      <button type="button" class="mode-choice mode-choice--tech" data-choose-mode="tech">
+        <span class="mode-choice__icon"><%- icon('cpu') %></span>
+        <span class="mode-choice__title">Technology</span>
+        <span class="mode-choice__sub">Software • Web • AI • ICEGATE • Automation</span>
+        <span class="mode-choice__go"><%- icon('arrow-right') %></span>
+      </button>
+      <button type="button" class="mode-choice mode-choice--trade" data-choose-mode="trade">
+        <span class="mode-choice__badge">Coming soon</span>
+        <span class="mode-choice__icon"><%- icon('ship') %></span>
+        <span class="mode-choice__title">CHA &amp; Import / Export</span>
+        <span class="mode-choice__sub">Customs clearance • Trading • Household • Food • Vehicles • General Goods</span>
+        <span class="mode-choice__go"><%- icon('arrow-right') %></span>
+      </button>
+    </div>
+    <p class="mode-overlay__hint">You can switch any time with the Tech / Trade control at the bottom of the screen.</p>
+  </div>
+</div>
